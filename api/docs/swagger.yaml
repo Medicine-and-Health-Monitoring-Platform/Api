@@ -1,0 +1,269 @@
+basePath: /api/v1
+definitions:
+  models.UUser:
+    properties:
+      first_name:
+        type: string
+      last_name:
+        type: string
+      phone_number:
+        type: string
+    type: object
+  users.GetProfileResponse:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      first_name:
+        type: string
+      id:
+        type: string
+      last_name:
+        type: string
+      phone_number:
+        type: string
+      role:
+        description: Should be 'customer', 'provider', or 'admin'
+        type: string
+    type: object
+  users.UpdateProfileRequest:
+    properties:
+      first_name:
+        type: string
+      last_name:
+        type: string
+      phone_number:
+        type: string
+      role:
+        description: Should be 'customer', 'provider', or 'admin'
+        type: string
+      user_id:
+        type: string
+    type: object
+  users.UserResponse:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      first_name:
+        type: string
+      id:
+        type: string
+      last_name:
+        type: string
+      phone_number:
+        type: string
+      role:
+        description: Should be 'customer', 'provider', or 'admin'
+        type: string
+    type: object
+  users.UserResponseU:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      first_name:
+        type: string
+      id:
+        type: string
+      last_name:
+        type: string
+      phone_number:
+        type: string
+    type: object
+  users.UserResponses:
+    properties:
+      users:
+        items:
+          $ref: '#/definitions/users.UserResponse'
+        type: array
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: API Gateway of Personalized Medicine and Health Monitoring Platform
+  title: Personalized Medicine and Health Monitoring Platform
+  version: "1.0"
+paths:
+  /admin/user/{id}:
+    delete:
+      description: Deletes user info by ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: User deleted successfully
+          schema:
+            type: string
+        "400":
+          description: Invalid user id
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Deletes user
+      tags:
+      - admin
+    get:
+      description: Retrieves user info by ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/users.GetProfileResponse'
+        "400":
+          description: Invalid user id
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Gets user
+      tags:
+      - admin
+    put:
+      description: Updates user info by ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: New user data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/users.UpdateProfileRequest'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/users.UserResponse'
+        "400":
+          description: Invalid user id
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Updates user
+      tags:
+      - admin
+  /admin/users:
+    get:
+      description: Retrieves users from the database by filtering
+      parameters:
+      - description: Full name
+        in: query
+        name: full_name
+        type: string
+      - description: Role
+        in: query
+        name: role
+        type: string
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Number of users per page
+        in: query
+        name: limit
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/users.UserResponses'
+        "400":
+          description: Invalid pagination parameters
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Fetches users
+      tags:
+      - admin
+  /customer/profile:
+    get:
+      description: Retrieves user profile by ID
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/users.GetProfileResponse'
+        "400":
+          description: Invalid user id
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Gets user
+      tags:
+      - user
+    put:
+      description: Updates user info by ID
+      parameters:
+      - description: New user data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.UUser'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/users.UserResponseU'
+        "400":
+          description: Invalid user id or data
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Updates user
+      tags:
+      - user
+schemes:
+- http
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
