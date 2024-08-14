@@ -2,6 +2,7 @@ package pkg
 
 import (
 	"Api_Gateway/config"
+	pb "Api_Gateway/genproto/health_analytics"
 	pbu "Api_Gateway/genproto/users"
 	"log"
 
@@ -32,4 +33,15 @@ func NewAdminClient(cfg *config.Config) pbu.AdminClient {
 	}
 
 	return pbu.NewAdminClient(conn)
+}
+
+func NewHealthClient(cfg *config.Config) pb.HealthAnalyticsServiceClient {
+	conn, err := grpc.NewClient(cfg.HEALTH_SERVICE_PORT,
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
+	)
+	if err != nil {
+		log.Println(errors.Wrap(err, "failed to connect to the address"))
+		return nil
+	}
+	return pb.NewHealthAnalyticsServiceClient(conn)
 }

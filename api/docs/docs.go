@@ -209,6 +209,546 @@ const docTemplate = `{
                 }
             }
         },
+        "/customer/lifestyle": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Creates a new lifestyle data record for a user",
+                "tags": [
+                    "lifestyle"
+                ],
+                "summary": "Adds new lifestyle data",
+                "parameters": [
+                    {
+                        "description": "Lifestyle data",
+                        "name": "lifestyle_data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/health_analytics.AddLifestyleDataRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/health_analytics.AddLifestyleDataResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request body",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error while processing request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/lifestyle/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Retrieves lifestyle data by ID",
+                "tags": [
+                    "lifestyle"
+                ],
+                "summary": "Gets lifestyle data",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Lifestyle data ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/health_analytics.GetLifestyleDataResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid data ID",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error while processing request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Updates existing lifestyle data",
+                "tags": [
+                    "lifestyle"
+                ],
+                "summary": "Updates lifestyle data",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Lifestyle data ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Updated lifestyle data",
+                        "name": "lifestyle_data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/health_analytics.UpdateLifestyleDataRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/health_analytics.UpdateLifestyleDataResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request body",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error while processing request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Deletes lifestyle data by ID",
+                "tags": [
+                    "lifestyle"
+                ],
+                "summary": "Deletes lifestyle data",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Lifestyle data ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/health_analytics.DeleteLifestyleDataResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid data ID",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error while processing request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/medical": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Retrieves a list of medical records for a user",
+                "tags": [
+                    "medical"
+                ],
+                "summary": "Lists medical records",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Number of records per page",
+                        "name": "limit",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/health_analytics.ListMedicalRecordsResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid query parameters",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error while processing request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Creates a new medical record for a user",
+                "tags": [
+                    "medical"
+                ],
+                "summary": "Adds a new medical record",
+                "parameters": [
+                    {
+                        "description": "Medical record data",
+                        "name": "medical_record",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/health_analytics.AddMedicalRecordRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/health_analytics.AddMedicalRecordResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request body",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error while processing request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/medical/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Retrieves a medical record by ID",
+                "tags": [
+                    "medical"
+                ],
+                "summary": "Gets a medical record",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Medical record ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/health_analytics.GetMedicalRecordResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid record ID",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error while processing request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Updates an existing medical record",
+                "tags": [
+                    "medical"
+                ],
+                "summary": "Updates a medical record",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Medical record ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Updated medical record data",
+                        "name": "medical_record",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/health_analytics.UpdateMedicalRecordRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/health_analytics.UpdateMedicalRecordResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request body",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error while processing request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Deletes a medical record by ID",
+                "tags": [
+                    "medical"
+                ],
+                "summary": "Deletes a medical record",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Medical record ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/health_analytics.DeleteMedicalRecordResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid record ID",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error while processing request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/monitoring/daily": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Retrieves daily health summary for the user",
+                "tags": [
+                    "monitoring"
+                ],
+                "summary": "Gets daily health summary",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/health_analytics.GetDailyHealthSummaryResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request body",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error while processing request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/monitoring/realtime": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Retrieves real-time health monitoring data for the user",
+                "tags": [
+                    "monitoring"
+                ],
+                "summary": "Gets real-time health monitoring data",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/health_analytics.GetRealtimeHealthMonitoringResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request body",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error while processing request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/monitoring/recommendations": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Generates personalized health recommendations based on user's health data",
+                "tags": [
+                    "monitoring"
+                ],
+                "summary": "Generates health recommendations",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/health_analytics.GenerateHealthRecommendationsResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request body",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error while processing request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/monitoring/weekly": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Retrieves weekly health summary for the user",
+                "tags": [
+                    "monitoring"
+                ],
+                "summary": "Gets weekly health summary",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/health_analytics.GetWeeklyHealthSummaryResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request body",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error while processing request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/customer/profile": {
             "get": {
                 "security": [
@@ -285,9 +825,518 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/customer/wearable": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Creates a new wearable data record for a user",
+                "tags": [
+                    "wearable"
+                ],
+                "summary": "Adds new wearable data",
+                "parameters": [
+                    {
+                        "description": "Wearable data",
+                        "name": "wearable_data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/health_analytics.AddWearableDataRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/health_analytics.AddWearableDataResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request body",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error while processing request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/wearable/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Retrieves wearable data by ID",
+                "tags": [
+                    "wearable"
+                ],
+                "summary": "Gets wearable data",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Wearable data ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/health_analytics.GetWearableDataResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid data ID",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error while processing request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Updates existing wearable data",
+                "tags": [
+                    "wearable"
+                ],
+                "summary": "Updates wearable data",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Wearable data ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Updated wearable data",
+                        "name": "wearable_data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/health_analytics.UpdateWearableDataRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/health_analytics.UpdateWearableDataResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request body",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error while processing request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Deletes wearable data by ID",
+                "tags": [
+                    "wearable"
+                ],
+                "summary": "Deletes wearable data",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Wearable data ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/health_analytics.DeleteWearableDataResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid data ID",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error while processing request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
+        "health_analytics.AddLifestyleDataRequest": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/health_analytics.LifestyleData"
+                }
+            }
+        },
+        "health_analytics.AddLifestyleDataResponse": {
+            "type": "object",
+            "properties": {
+                "data_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "health_analytics.AddMedicalRecordRequest": {
+            "type": "object",
+            "properties": {
+                "record": {
+                    "$ref": "#/definitions/health_analytics.MedicalRecord"
+                }
+            }
+        },
+        "health_analytics.AddMedicalRecordResponse": {
+            "type": "object",
+            "properties": {
+                "record_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "health_analytics.AddWearableDataRequest": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/health_analytics.WearableData"
+                }
+            }
+        },
+        "health_analytics.AddWearableDataResponse": {
+            "type": "object",
+            "properties": {
+                "data_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "health_analytics.DeleteLifestyleDataResponse": {
+            "type": "object",
+            "properties": {
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "health_analytics.DeleteMedicalRecordResponse": {
+            "type": "object",
+            "properties": {
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "health_analytics.DeleteWearableDataResponse": {
+            "type": "object",
+            "properties": {
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "health_analytics.GenerateHealthRecommendationsResponse": {
+            "type": "object",
+            "properties": {
+                "recommendations": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/health_analytics.HealthRecommendation"
+                    }
+                }
+            }
+        },
+        "health_analytics.GetDailyHealthSummaryResponse": {
+            "type": "object",
+            "properties": {
+                "date": {
+                    "type": "string"
+                },
+                "summary_data": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "health_analytics.GetLifestyleDataResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/health_analytics.LifestyleData"
+                }
+            }
+        },
+        "health_analytics.GetMedicalRecordResponse": {
+            "type": "object",
+            "properties": {
+                "record": {
+                    "$ref": "#/definitions/health_analytics.MedicalRecord"
+                }
+            }
+        },
+        "health_analytics.GetRealtimeHealthMonitoringResponse": {
+            "type": "object",
+            "properties": {
+                "data_type": {
+                    "type": "string"
+                },
+                "data_value": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "timestamp": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "health_analytics.GetWearableDataResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/health_analytics.WearableData"
+                }
+            }
+        },
+        "health_analytics.GetWeeklyHealthSummaryResponse": {
+            "type": "object",
+            "properties": {
+                "end_date": {
+                    "type": "string"
+                },
+                "start_date": {
+                    "type": "string"
+                },
+                "summary_data": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "health_analytics.HealthRecommendation": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "priority": {
+                    "type": "integer"
+                },
+                "recommendation_type": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "health_analytics.LifestyleData": {
+            "type": "object",
+            "properties": {
+                "data_type": {
+                    "type": "string"
+                },
+                "data_value": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "id": {
+                    "type": "string"
+                },
+                "recorded_date": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "health_analytics.ListMedicalRecordsResponse": {
+            "type": "object",
+            "properties": {
+                "records": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/health_analytics.MedicalRecord"
+                    }
+                },
+                "total_count": {
+                    "type": "integer"
+                }
+            }
+        },
+        "health_analytics.MedicalRecord": {
+            "type": "object",
+            "properties": {
+                "attachments": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "description": {
+                    "type": "string"
+                },
+                "doctor_id": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "record_date": {
+                    "type": "string"
+                },
+                "record_type": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "health_analytics.UpdateLifestyleDataRequest": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/health_analytics.LifestyleData"
+                }
+            }
+        },
+        "health_analytics.UpdateLifestyleDataResponse": {
+            "type": "object",
+            "properties": {
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "health_analytics.UpdateMedicalRecordRequest": {
+            "type": "object",
+            "properties": {
+                "record": {
+                    "$ref": "#/definitions/health_analytics.MedicalRecord"
+                }
+            }
+        },
+        "health_analytics.UpdateMedicalRecordResponse": {
+            "type": "object",
+            "properties": {
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "health_analytics.UpdateWearableDataRequest": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/health_analytics.WearableData"
+                }
+            }
+        },
+        "health_analytics.UpdateWearableDataResponse": {
+            "type": "object",
+            "properties": {
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "health_analytics.WearableData": {
+            "type": "object",
+            "properties": {
+                "data_type": {
+                    "type": "string"
+                },
+                "data_value": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "device_type": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "recorded_timestamp": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        },
         "models.UUser": {
             "type": "object",
             "properties": {

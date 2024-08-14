@@ -9,18 +9,18 @@ import (
 )
 
 type Config struct {
-	HTTP_PORT            string
-	AUTH_SERVICE_PORT    string
-	PRODUCT_SERVICE_PORT string
-	DB_HOST              string
-	DB_PORT              int
-	DB_USER              string
-	DB_PASSWORD          string
-	DB_NAME              string
-	ACCESS_TOKEN         string
-	KAFKA_HOST           string
-	KAFKA_PORT           string
-	KAFKA_TOPIC          string
+	HTTP_PORT           string
+	AUTH_SERVICE_PORT   string
+	HEALTH_SERVICE_PORT string
+	DB_HOST             string
+	DB_PORT             int
+	DB_USER             string
+	DB_PASSWORD         string
+	DB_NAME             string
+	ACCESS_TOKEN        string
+	KAFKA_HOST          string
+	KAFKA_PORT          string
+	KAFKA_TOPIC         string
 }
 
 func Load() *Config {
@@ -33,9 +33,9 @@ func Load() *Config {
 	}
 	cfg := Config{}
 
-	cfg.HTTP_PORT = cast.ToString(coalesce("HTTP_PORT", ":8080"))
-	cfg.AUTH_SERVICE_PORT = cast.ToString(coalesce("AUTH_SERVICE_PORT", ":50051"))
-	cfg.PRODUCT_SERVICE_PORT = cast.ToString(coalesce("PRODUCT_SERVICE_PORT", ":8082"))
+	cfg.HTTP_PORT = cast.ToString(coalesce("HTTP_PORT", "api-gateway:8080"))
+	cfg.AUTH_SERVICE_PORT = cast.ToString(coalesce("AUTH_SERVICE_PORT", "auth:50051"))
+	cfg.HEALTH_SERVICE_PORT = cast.ToString(coalesce("HEALTH_SERVICE_PORT", "health:8083"))
 
 	cfg.DB_HOST = cast.ToString(coalesce("DB_HOST", "localhost"))
 	cfg.DB_PORT = cast.ToInt(coalesce("DB_PORT", 5432))

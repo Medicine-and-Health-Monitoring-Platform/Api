@@ -1,5 +1,216 @@
 basePath: /api/v1
 definitions:
+  health_analytics.AddLifestyleDataRequest:
+    properties:
+      data:
+        $ref: '#/definitions/health_analytics.LifestyleData'
+    type: object
+  health_analytics.AddLifestyleDataResponse:
+    properties:
+      data_id:
+        type: string
+    type: object
+  health_analytics.AddMedicalRecordRequest:
+    properties:
+      record:
+        $ref: '#/definitions/health_analytics.MedicalRecord'
+    type: object
+  health_analytics.AddMedicalRecordResponse:
+    properties:
+      record_id:
+        type: string
+    type: object
+  health_analytics.AddWearableDataRequest:
+    properties:
+      data:
+        $ref: '#/definitions/health_analytics.WearableData'
+    type: object
+  health_analytics.AddWearableDataResponse:
+    properties:
+      data_id:
+        type: string
+    type: object
+  health_analytics.DeleteLifestyleDataResponse:
+    properties:
+      success:
+        type: boolean
+    type: object
+  health_analytics.DeleteMedicalRecordResponse:
+    properties:
+      success:
+        type: boolean
+    type: object
+  health_analytics.DeleteWearableDataResponse:
+    properties:
+      success:
+        type: boolean
+    type: object
+  health_analytics.GenerateHealthRecommendationsResponse:
+    properties:
+      recommendations:
+        items:
+          $ref: '#/definitions/health_analytics.HealthRecommendation'
+        type: array
+    type: object
+  health_analytics.GetDailyHealthSummaryResponse:
+    properties:
+      date:
+        type: string
+      summary_data:
+        additionalProperties:
+          items:
+            type: integer
+          type: array
+        type: object
+      user_id:
+        type: string
+    type: object
+  health_analytics.GetLifestyleDataResponse:
+    properties:
+      data:
+        $ref: '#/definitions/health_analytics.LifestyleData'
+    type: object
+  health_analytics.GetMedicalRecordResponse:
+    properties:
+      record:
+        $ref: '#/definitions/health_analytics.MedicalRecord'
+    type: object
+  health_analytics.GetRealtimeHealthMonitoringResponse:
+    properties:
+      data_type:
+        type: string
+      data_value:
+        items:
+          type: integer
+        type: array
+      timestamp:
+        type: string
+      user_id:
+        type: string
+    type: object
+  health_analytics.GetWearableDataResponse:
+    properties:
+      data:
+        $ref: '#/definitions/health_analytics.WearableData'
+    type: object
+  health_analytics.GetWeeklyHealthSummaryResponse:
+    properties:
+      end_date:
+        type: string
+      start_date:
+        type: string
+      summary_data:
+        additionalProperties:
+          items:
+            type: integer
+          type: array
+        type: object
+      user_id:
+        type: string
+    type: object
+  health_analytics.HealthRecommendation:
+    properties:
+      description:
+        type: string
+      id:
+        type: string
+      priority:
+        type: integer
+      recommendation_type:
+        type: string
+      user_id:
+        type: string
+    type: object
+  health_analytics.LifestyleData:
+    properties:
+      data_type:
+        type: string
+      data_value:
+        items:
+          type: integer
+        type: array
+      id:
+        type: string
+      recorded_date:
+        type: string
+      user_id:
+        type: string
+    type: object
+  health_analytics.ListMedicalRecordsResponse:
+    properties:
+      records:
+        items:
+          $ref: '#/definitions/health_analytics.MedicalRecord'
+        type: array
+      total_count:
+        type: integer
+    type: object
+  health_analytics.MedicalRecord:
+    properties:
+      attachments:
+        items:
+          type: string
+        type: array
+      description:
+        type: string
+      doctor_id:
+        type: string
+      id:
+        type: string
+      record_date:
+        type: string
+      record_type:
+        type: string
+      user_id:
+        type: string
+    type: object
+  health_analytics.UpdateLifestyleDataRequest:
+    properties:
+      data:
+        $ref: '#/definitions/health_analytics.LifestyleData'
+    type: object
+  health_analytics.UpdateLifestyleDataResponse:
+    properties:
+      success:
+        type: boolean
+    type: object
+  health_analytics.UpdateMedicalRecordRequest:
+    properties:
+      record:
+        $ref: '#/definitions/health_analytics.MedicalRecord'
+    type: object
+  health_analytics.UpdateMedicalRecordResponse:
+    properties:
+      success:
+        type: boolean
+    type: object
+  health_analytics.UpdateWearableDataRequest:
+    properties:
+      data:
+        $ref: '#/definitions/health_analytics.WearableData'
+    type: object
+  health_analytics.UpdateWearableDataResponse:
+    properties:
+      success:
+        type: boolean
+    type: object
+  health_analytics.WearableData:
+    properties:
+      data_type:
+        type: string
+      data_value:
+        items:
+          type: integer
+        type: array
+      device_type:
+        type: string
+      id:
+        type: string
+      recorded_timestamp:
+        type: string
+      user_id:
+        type: string
+    type: object
   models.UUser:
     properties:
       first_name:
@@ -211,6 +422,346 @@ paths:
       summary: Fetches users
       tags:
       - admin
+  /customer/lifestyle:
+    post:
+      description: Creates a new lifestyle data record for a user
+      parameters:
+      - description: Lifestyle data
+        in: body
+        name: lifestyle_data
+        required: true
+        schema:
+          $ref: '#/definitions/health_analytics.AddLifestyleDataRequest'
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/health_analytics.AddLifestyleDataResponse'
+        "400":
+          description: Invalid request body
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Adds new lifestyle data
+      tags:
+      - lifestyle
+  /customer/lifestyle/{id}:
+    delete:
+      description: Deletes lifestyle data by ID
+      parameters:
+      - description: Lifestyle data ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/health_analytics.DeleteLifestyleDataResponse'
+        "400":
+          description: Invalid data ID
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Deletes lifestyle data
+      tags:
+      - lifestyle
+    get:
+      description: Retrieves lifestyle data by ID
+      parameters:
+      - description: Lifestyle data ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/health_analytics.GetLifestyleDataResponse'
+        "400":
+          description: Invalid data ID
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Gets lifestyle data
+      tags:
+      - lifestyle
+    put:
+      description: Updates existing lifestyle data
+      parameters:
+      - description: Lifestyle data ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Updated lifestyle data
+        in: body
+        name: lifestyle_data
+        required: true
+        schema:
+          $ref: '#/definitions/health_analytics.UpdateLifestyleDataRequest'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/health_analytics.UpdateLifestyleDataResponse'
+        "400":
+          description: Invalid request body
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Updates lifestyle data
+      tags:
+      - lifestyle
+  /customer/medical:
+    get:
+      description: Retrieves a list of medical records for a user
+      parameters:
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Number of records per page
+        in: query
+        name: limit
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/health_analytics.ListMedicalRecordsResponse'
+        "400":
+          description: Invalid query parameters
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Lists medical records
+      tags:
+      - medical
+    post:
+      description: Creates a new medical record for a user
+      parameters:
+      - description: Medical record data
+        in: body
+        name: medical_record
+        required: true
+        schema:
+          $ref: '#/definitions/health_analytics.AddMedicalRecordRequest'
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/health_analytics.AddMedicalRecordResponse'
+        "400":
+          description: Invalid request body
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Adds a new medical record
+      tags:
+      - medical
+  /customer/medical/{id}:
+    delete:
+      description: Deletes a medical record by ID
+      parameters:
+      - description: Medical record ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/health_analytics.DeleteMedicalRecordResponse'
+        "400":
+          description: Invalid record ID
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Deletes a medical record
+      tags:
+      - medical
+    get:
+      description: Retrieves a medical record by ID
+      parameters:
+      - description: Medical record ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/health_analytics.GetMedicalRecordResponse'
+        "400":
+          description: Invalid record ID
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Gets a medical record
+      tags:
+      - medical
+    put:
+      description: Updates an existing medical record
+      parameters:
+      - description: Medical record ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Updated medical record data
+        in: body
+        name: medical_record
+        required: true
+        schema:
+          $ref: '#/definitions/health_analytics.UpdateMedicalRecordRequest'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/health_analytics.UpdateMedicalRecordResponse'
+        "400":
+          description: Invalid request body
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Updates a medical record
+      tags:
+      - medical
+  /customer/monitoring/daily:
+    get:
+      description: Retrieves daily health summary for the user
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/health_analytics.GetDailyHealthSummaryResponse'
+        "400":
+          description: Invalid request body
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Gets daily health summary
+      tags:
+      - monitoring
+  /customer/monitoring/realtime:
+    get:
+      description: Retrieves real-time health monitoring data for the user
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/health_analytics.GetRealtimeHealthMonitoringResponse'
+        "400":
+          description: Invalid request body
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Gets real-time health monitoring data
+      tags:
+      - monitoring
+  /customer/monitoring/recommendations:
+    post:
+      description: Generates personalized health recommendations based on user's health
+        data
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/health_analytics.GenerateHealthRecommendationsResponse'
+        "400":
+          description: Invalid request body
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Generates health recommendations
+      tags:
+      - monitoring
+  /customer/monitoring/weekly:
+    get:
+      description: Retrieves weekly health summary for the user
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/health_analytics.GetWeeklyHealthSummaryResponse'
+        "400":
+          description: Invalid request body
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Gets weekly health summary
+      tags:
+      - monitoring
   /customer/profile:
     get:
       description: Retrieves user profile by ID
@@ -259,6 +810,119 @@ paths:
       summary: Updates user
       tags:
       - user
+  /customer/wearable:
+    post:
+      description: Creates a new wearable data record for a user
+      parameters:
+      - description: Wearable data
+        in: body
+        name: wearable_data
+        required: true
+        schema:
+          $ref: '#/definitions/health_analytics.AddWearableDataRequest'
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/health_analytics.AddWearableDataResponse'
+        "400":
+          description: Invalid request body
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Adds new wearable data
+      tags:
+      - wearable
+  /customer/wearable/{id}:
+    delete:
+      description: Deletes wearable data by ID
+      parameters:
+      - description: Wearable data ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/health_analytics.DeleteWearableDataResponse'
+        "400":
+          description: Invalid data ID
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Deletes wearable data
+      tags:
+      - wearable
+    get:
+      description: Retrieves wearable data by ID
+      parameters:
+      - description: Wearable data ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/health_analytics.GetWearableDataResponse'
+        "400":
+          description: Invalid data ID
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Gets wearable data
+      tags:
+      - wearable
+    put:
+      description: Updates existing wearable data
+      parameters:
+      - description: Wearable data ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Updated wearable data
+        in: body
+        name: wearable_data
+        required: true
+        schema:
+          $ref: '#/definitions/health_analytics.UpdateWearableDataRequest'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/health_analytics.UpdateWearableDataResponse'
+        "400":
+          description: Invalid request body
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Updates wearable data
+      tags:
+      - wearable
 schemes:
 - http
 securityDefinitions:

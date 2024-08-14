@@ -35,60 +35,55 @@ func NewRouter(cfg *config.Config) *gin.Engine {
 	{
 		u := admin.Group("/user")
 		{
-			u.GET("/:id", h.GetProfile)
-			u.PUT("/:id", h.UpdateProfile)
+			u.GET("/:id", h.GetUser)
+			u.PUT("/:id", h.UpdateUser)
 			u.DELETE("/:id", h.DeleteUser)
 		}
 		admin.GET("/users", h.FetchUsers)
-
-		//p := admin.Group("/product")
-		//{
-		//	p.POST("", h.PostProduct)
-		//	p.GET("/:id", h.GetProduct)
-		//	p.PUT("/:id", h.PutProduct)
-		//	p.DELETE("/:id", h.DeleteProduct)
-		//	p.GET("/all", h.FetchProducts)
-		//}
 
 	}
 
 	user := api.Group("/customer")
 	{
-		//a := user.Group("/order")
-		//{
-		//	a.POST("/", h.MakeOrder)
-		//	a.GET("/:id", h.GetOrder)
-		//}
-		//c := user.Group("/category")
-		//{
-		//	c.GET("/all", h.GetCategories)
-		//	c.POST("/", h.CreateCategory)
-		//	c.PUT("/:id", h.UpdateCategory)
-		//	c.DELETE("/:id", h.DeleteCategory)
-		//}
+
 		p := user.Group("/profile")
 		{
 			p.GET("/", h.GetProfile)
 			p.PUT("/", h.UpdateProfile)
 		}
 
-		//prod := user.Group("/product")
-		//prod.GET("/all", h.FetchProducts)
-		//
-		//b := user.Group("/basket")
-		//{
-		//	b.POST("", h.AddToBasket)
-		//	b.GET("/:id", h.GetBasket)
-		//	b.PUT("/:id", h.UpdateBasket)
-		//	b.DELETE("/:id", h.RemoveFromBasket)
-		//}
-		//r := user.Group("/review")
-		//{
-		//	r.POST("/", h.CreateReview)
-		//	r.PUT("/:id", h.UpdateReview)
-		//	r.DELETE("/:id", h.DeleteReview)
-		//	r.GET("/all", h.FetchReviews)
-		//}
+		medical := user.Group("/medical")
+		{
+			medical.POST("/", h.AddMedicalRecord)
+			medical.GET("/:id", h.GetMedicalRecord)
+			medical.PUT("/:id", h.UpdateMedicalRecord)
+			medical.DELETE("/:id", h.DeleteMedicalRecord)
+			medical.GET("/", h.ListMedicalRecords)
+		}
+
+		lifestyle := user.Group("/lifestyle")
+		{
+			lifestyle.POST("", h.AddLifestyleData)
+			lifestyle.GET("/:id", h.GetLifestyleData)
+			lifestyle.PUT("/:id", h.UpdateLifestyleData)
+			lifestyle.DELETE("/:id", h.DeleteLifestyleData)
+		}
+
+		wearable := user.Group("/wearable")
+		{
+			wearable.POST("/", h.AddWearableData)
+			wearable.GET("/:id", h.GetWearableData)
+			wearable.PUT("/:id", h.UpdateWearableData)
+			wearable.DELETE("/:id", h.DeleteWearableData)
+		}
+
+		monitoring := user.Group("/monitoring")
+		{
+			monitoring.POST("/recommendations", h.GenerateHealthRecommendations)
+			monitoring.GET("/realtime", h.GetRealtimeHealthMonitoring)
+			monitoring.GET("/daily", h.GetDailyHealthSummary)
+			monitoring.GET("/weekly", h.GetWeeklyHealthSummary)
+		}
 	}
 
 	return router
