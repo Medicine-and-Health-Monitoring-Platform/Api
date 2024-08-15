@@ -83,6 +83,7 @@ func NewRouter(cfg *config.Config) *gin.Engine {
 			monitoring.GET("/realtime", h.GetRealtimeHealthMonitoring)
 			monitoring.GET("/daily", h.GetDailyHealthSummary)
 			monitoring.GET("/weekly", h.GetWeeklyHealthSummary)
+			// monitoring.POST("/")
 		}
 	}
 

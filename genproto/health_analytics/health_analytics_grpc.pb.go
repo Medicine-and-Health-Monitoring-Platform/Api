@@ -36,9 +36,10 @@ type HealthAnalyticsServiceClient interface {
 	UpdateWearableData(ctx context.Context, in *UpdateWearableDataRequest, opts ...grpc.CallOption) (*UpdateWearableDataResponse, error)
 	DeleteWearableData(ctx context.Context, in *DeleteWearableDataRequest, opts ...grpc.CallOption) (*DeleteWearableDataResponse, error)
 	GenerateHealthRecommendations(ctx context.Context, in *GenerateHealthRecommendationsRequest, opts ...grpc.CallOption) (*GenerateHealthRecommendationsResponse, error)
-	GetRealtimeHealthMonitoring(ctx context.Context, in *GetRealtimeHealthMonitoringRequest, opts ...grpc.CallOption) (HealthAnalyticsService_GetRealtimeHealthMonitoringClient, error)
+	GetRealtimeHealthMonitoring(ctx context.Context, in *GetRealtimeHealthMonitoringRequest, opts ...grpc.CallOption) (*GetRealtimeHealthMonitoringResponse, error)
 	GetDailyHealthSummary(ctx context.Context, in *GetDailyHealthSummaryRequest, opts ...grpc.CallOption) (*GetDailyHealthSummaryResponse, error)
 	GetWeeklyHealthSummary(ctx context.Context, in *GetWeeklyHealthSummaryRequest, opts ...grpc.CallOption) (*GetWeeklyHealthSummaryResponse, error)
+	GetHealthMonitor(ctx context.Context, in *UserId, opts ...grpc.CallOption) (*GetHealthMonitorsRes, error)
 }
 
 type healthAnalyticsServiceClient struct {
@@ -175,36 +176,13 @@ func (c *healthAnalyticsServiceClient) GenerateHealthRecommendations(ctx context
 	return out, nil
 }
 
-func (c *healthAnalyticsServiceClient) GetRealtimeHealthMonitoring(ctx context.Context, in *GetRealtimeHealthMonitoringRequest, opts ...grpc.CallOption) (HealthAnalyticsService_GetRealtimeHealthMonitoringClient, error) {
-	stream, err := c.cc.NewStream(ctx, &HealthAnalyticsService_ServiceDesc.Streams[0], "/health_analytics.HealthAnalyticsService/GetRealtimeHealthMonitoring", opts...)
+func (c *healthAnalyticsServiceClient) GetRealtimeHealthMonitoring(ctx context.Context, in *GetRealtimeHealthMonitoringRequest, opts ...grpc.CallOption) (*GetRealtimeHealthMonitoringResponse, error) {
+	out := new(GetRealtimeHealthMonitoringResponse)
+	err := c.cc.Invoke(ctx, "/health_analytics.HealthAnalyticsService/GetRealtimeHealthMonitoring", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &healthAnalyticsServiceGetRealtimeHealthMonitoringClient{stream}
-	if err := x.ClientStream.SendMsg(in); err != nil {
-		return nil, err
-	}
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
-	return x, nil
-}
-
-type HealthAnalyticsService_GetRealtimeHealthMonitoringClient interface {
-	Recv() (*GetRealtimeHealthMonitoringResponse, error)
-	grpc.ClientStream
-}
-
-type healthAnalyticsServiceGetRealtimeHealthMonitoringClient struct {
-	grpc.ClientStream
-}
-
-func (x *healthAnalyticsServiceGetRealtimeHealthMonitoringClient) Recv() (*GetRealtimeHealthMonitoringResponse, error) {
-	m := new(GetRealtimeHealthMonitoringResponse)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
+	return out, nil
 }
 
 func (c *healthAnalyticsServiceClient) GetDailyHealthSummary(ctx context.Context, in *GetDailyHealthSummaryRequest, opts ...grpc.CallOption) (*GetDailyHealthSummaryResponse, error) {
@@ -219,6 +197,15 @@ func (c *healthAnalyticsServiceClient) GetDailyHealthSummary(ctx context.Context
 func (c *healthAnalyticsServiceClient) GetWeeklyHealthSummary(ctx context.Context, in *GetWeeklyHealthSummaryRequest, opts ...grpc.CallOption) (*GetWeeklyHealthSummaryResponse, error) {
 	out := new(GetWeeklyHealthSummaryResponse)
 	err := c.cc.Invoke(ctx, "/health_analytics.HealthAnalyticsService/GetWeeklyHealthSummary", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *healthAnalyticsServiceClient) GetHealthMonitor(ctx context.Context, in *UserId, opts ...grpc.CallOption) (*GetHealthMonitorsRes, error) {
+	out := new(GetHealthMonitorsRes)
+	err := c.cc.Invoke(ctx, "/health_analytics.HealthAnalyticsService/GetHealthMonitor", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -243,9 +230,10 @@ type HealthAnalyticsServiceServer interface {
 	UpdateWearableData(context.Context, *UpdateWearableDataRequest) (*UpdateWearableDataResponse, error)
 	DeleteWearableData(context.Context, *DeleteWearableDataRequest) (*DeleteWearableDataResponse, error)
 	GenerateHealthRecommendations(context.Context, *GenerateHealthRecommendationsRequest) (*GenerateHealthRecommendationsResponse, error)
-	GetRealtimeHealthMonitoring(*GetRealtimeHealthMonitoringRequest, HealthAnalyticsService_GetRealtimeHealthMonitoringServer) error
+	GetRealtimeHealthMonitoring(context.Context, *GetRealtimeHealthMonitoringRequest) (*GetRealtimeHealthMonitoringResponse, error)
 	GetDailyHealthSummary(context.Context, *GetDailyHealthSummaryRequest) (*GetDailyHealthSummaryResponse, error)
 	GetWeeklyHealthSummary(context.Context, *GetWeeklyHealthSummaryRequest) (*GetWeeklyHealthSummaryResponse, error)
+	GetHealthMonitor(context.Context, *UserId) (*GetHealthMonitorsRes, error)
 	mustEmbedUnimplementedHealthAnalyticsServiceServer()
 }
 
@@ -295,14 +283,17 @@ func (UnimplementedHealthAnalyticsServiceServer) DeleteWearableData(context.Cont
 func (UnimplementedHealthAnalyticsServiceServer) GenerateHealthRecommendations(context.Context, *GenerateHealthRecommendationsRequest) (*GenerateHealthRecommendationsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GenerateHealthRecommendations not implemented")
 }
-func (UnimplementedHealthAnalyticsServiceServer) GetRealtimeHealthMonitoring(*GetRealtimeHealthMonitoringRequest, HealthAnalyticsService_GetRealtimeHealthMonitoringServer) error {
-	return status.Errorf(codes.Unimplemented, "method GetRealtimeHealthMonitoring not implemented")
+func (UnimplementedHealthAnalyticsServiceServer) GetRealtimeHealthMonitoring(context.Context, *GetRealtimeHealthMonitoringRequest) (*GetRealtimeHealthMonitoringResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetRealtimeHealthMonitoring not implemented")
 }
 func (UnimplementedHealthAnalyticsServiceServer) GetDailyHealthSummary(context.Context, *GetDailyHealthSummaryRequest) (*GetDailyHealthSummaryResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetDailyHealthSummary not implemented")
 }
 func (UnimplementedHealthAnalyticsServiceServer) GetWeeklyHealthSummary(context.Context, *GetWeeklyHealthSummaryRequest) (*GetWeeklyHealthSummaryResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetWeeklyHealthSummary not implemented")
+}
+func (UnimplementedHealthAnalyticsServiceServer) GetHealthMonitor(context.Context, *UserId) (*GetHealthMonitorsRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetHealthMonitor not implemented")
 }
 func (UnimplementedHealthAnalyticsServiceServer) mustEmbedUnimplementedHealthAnalyticsServiceServer() {
 }
@@ -570,25 +561,22 @@ func _HealthAnalyticsService_GenerateHealthRecommendations_Handler(srv interface
 	return interceptor(ctx, in, info, handler)
 }
 
-func _HealthAnalyticsService_GetRealtimeHealthMonitoring_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(GetRealtimeHealthMonitoringRequest)
-	if err := stream.RecvMsg(m); err != nil {
-		return err
+func _HealthAnalyticsService_GetRealtimeHealthMonitoring_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRealtimeHealthMonitoringRequest)
+	if err := dec(in); err != nil {
+		return nil, err
 	}
-	return srv.(HealthAnalyticsServiceServer).GetRealtimeHealthMonitoring(m, &healthAnalyticsServiceGetRealtimeHealthMonitoringServer{stream})
-}
-
-type HealthAnalyticsService_GetRealtimeHealthMonitoringServer interface {
-	Send(*GetRealtimeHealthMonitoringResponse) error
-	grpc.ServerStream
-}
-
-type healthAnalyticsServiceGetRealtimeHealthMonitoringServer struct {
-	grpc.ServerStream
-}
-
-func (x *healthAnalyticsServiceGetRealtimeHealthMonitoringServer) Send(m *GetRealtimeHealthMonitoringResponse) error {
-	return x.ServerStream.SendMsg(m)
+	if interceptor == nil {
+		return srv.(HealthAnalyticsServiceServer).GetRealtimeHealthMonitoring(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/health_analytics.HealthAnalyticsService/GetRealtimeHealthMonitoring",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(HealthAnalyticsServiceServer).GetRealtimeHealthMonitoring(ctx, req.(*GetRealtimeHealthMonitoringRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _HealthAnalyticsService_GetDailyHealthSummary_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -623,6 +611,24 @@ func _HealthAnalyticsService_GetWeeklyHealthSummary_Handler(srv interface{}, ctx
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(HealthAnalyticsServiceServer).GetWeeklyHealthSummary(ctx, req.(*GetWeeklyHealthSummaryRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _HealthAnalyticsService_GetHealthMonitor_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserId)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(HealthAnalyticsServiceServer).GetHealthMonitor(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/health_analytics.HealthAnalyticsService/GetHealthMonitor",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(HealthAnalyticsServiceServer).GetHealthMonitor(ctx, req.(*UserId))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -691,6 +697,10 @@ var HealthAnalyticsService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _HealthAnalyticsService_GenerateHealthRecommendations_Handler,
 		},
 		{
+			MethodName: "GetRealtimeHealthMonitoring",
+			Handler:    _HealthAnalyticsService_GetRealtimeHealthMonitoring_Handler,
+		},
+		{
 			MethodName: "GetDailyHealthSummary",
 			Handler:    _HealthAnalyticsService_GetDailyHealthSummary_Handler,
 		},
@@ -698,13 +708,11 @@ var HealthAnalyticsService_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "GetWeeklyHealthSummary",
 			Handler:    _HealthAnalyticsService_GetWeeklyHealthSummary_Handler,
 		},
-	},
-	Streams: []grpc.StreamDesc{
 		{
-			StreamName:    "GetRealtimeHealthMonitoring",
-			Handler:       _HealthAnalyticsService_GetRealtimeHealthMonitoring_Handler,
-			ServerStreams: true,
+			MethodName: "GetHealthMonitor",
+			Handler:    _HealthAnalyticsService_GetHealthMonitor_Handler,
 		},
 	},
+	Streams:  []grpc.StreamDesc{},
 	Metadata: "health_analytics.proto",
 }
